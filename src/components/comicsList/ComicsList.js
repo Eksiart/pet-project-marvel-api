@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import useMarvelService from '../../services/MarvelService';
 
 import './comicsList.scss';
@@ -39,9 +40,11 @@ const ComicsList = () => {
                 <li 
                 className="comics__item"
                 key={i}>
-                    <img src={item.thumbnail} alt={item.title} className='comics__item-img'/>
-                    <div className="comics__item-name">{item.title}</div>
-                    <div className="comics__item-price">{item.price}</div>
+                    <Link to={`./${item.id}`}>
+                        <img src={item.thumbnail} alt={item.title} className='comics__item-img'/>
+                        <div className="comics__item-name">{item.title}</div>
+                        <div className="comics__item-price">{item.price}</div>
+                    </Link>
                 </li>
             )
         })
