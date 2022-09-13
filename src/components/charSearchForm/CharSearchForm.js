@@ -10,7 +10,7 @@ import './charSearchFrom.scss';
 
 const CharSearchForm = () => {
   const [char, setChar] = useState(null);
-  const {loading, error, getCharacterByName, clearError} = useMarvelService();
+  const {getCharacterByName, clearError, process, setProcess} = useMarvelService();
 
   const onCharLoaded = (char) => {
     setChar(char);
@@ -20,10 +20,11 @@ const CharSearchForm = () => {
     clearError();
 
     getCharacterByName(name)
-      .then(onCharLoaded);
+      .then(onCharLoaded)
+      .then(() => setProcess('confirmed'))
   }
 
-  const errorMessage = error ? <div className="char_search-critical-error"><ErrorMessage/></div> : null;
+  const errorMessage = process === 'error' ? <div className="char_search-critical-error"><ErrorMessage/></div> : null;
   const results = !char ? null : char.length > 0 ?
       <div className="char__search-wrapper">
         <div className="char__search-success">
@@ -38,7 +39,6 @@ const CharSearchForm = () => {
       <div className="char__search-error">
         The character was not found. Check the name and try again
       </div>;
-
   return (
     <div className="char__search-form">
       <Formik 
@@ -62,7 +62,7 @@ const CharSearchForm = () => {
               <button
                 type='submit'
                 className='button button__main'
-                disabled={loading}>
+                disabled={process === 'loading'}>
                 <div className="inner">find</div>
               </button>
             </div>
